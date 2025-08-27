@@ -1,0 +1,38 @@
+### Silent installation template for Ansible ###
+
+general_eulaAccepted="{{ general.eulaAccepted | ansible.builtin.ternary('1', '0') }}"
+
+general_installationDir="{{ general.installationDir }}"
+
+daemonUser="{{ myRole.userName }}"
+storageDir="{{ myRole.storageDir }}"
+targetKeystoreDir="{{ myRole.targetKeystoreDir }}"
+targetKeyDir="{{ myRole.targetKeyDir }}"
+
+encryptionKeyFile="{{ myRole.encryptionKeyFile | basename }}"
+
+## service2(daemon) ##
+service2_startDaemon="{{ myRole2.service.enable | ansible.builtin.ternary('1', '0') }}"
+service2_daemonUser="{{ myRole2.service.userName }}"
+service2_port="{{ myRole2.service.port }}"
+service2_serviceName="{{ myRole2.service.name }}"
+service2_storageDir="{{ myRole2.storageDir }}"
+service2_storageLogDir="{{ myRole2.storageLogDir }}"
+service2_externalCertificateFile="{{ myRole2.externalCertificateFile | basename }}"
+service2_externalKeyFile="{{ myRole2.externalKeyFile | basename }}"
+service2_clientVerifyDomain="{{ myRole2.clientVerifyDomain }}"
+service2_insertUserName="{{ myRole2.insertUserName }}"
+service2_insertUserPassword="{{ myRole2.insertUserPassword }}"
+service2_additionalParams="{{ myRole2.additionalParams }}"
+service2_additionalParamsSecure="{{ myRole2.additionalParamsSecure }}"
+
+# service2 Database connection
+service2_dbType="{{ (database.myRole2.type == '') | ansible.builtin.ternary('', myRole2InternalDbTypes[database.myRole2.type | lower]) }}"
+service2_dbTableName="{{ database.myRole2.tableName }}"
+service2_dbConnectString="{{ database.myRole2.connectString }}"
+service2_dbConnectString_fromDSN="{{ database.myRole2.connectStringFromDSN }}"
+service2_dbConnectString_fromDriver="{{ database.myRole2.connectStringFromDriver }}"
+service2_dbConnectString_user="{{ database.myRole2.connectStringUserName }}"
+service2_dbConnectString_password="{{ database.myRole2.connectStringPassword }}"
+service2_dbConnectString_fromDriver_server="{{ database.myRole2.connectStringFromDriverServer }}"
+service2_dbConnectString_fromDriver_db="{{ database.myRole2.connectStringFromDriverDB }}"

@@ -1,0 +1,12 @@
+---
+vault_:
+  database:
+    myRole2:
+      connectStringUserName: ''
+      connectStringPassword: ''
+
+  myRole2:
+    userName: 'admin'
+    password: 'pass'
+    insertUserName: ''
+    insertUserPassword: ''

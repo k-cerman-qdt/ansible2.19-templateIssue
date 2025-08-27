@@ -1,0 +1,11 @@
+---
+- when: general.installationType | lower =='new' or general.installationType | lower =='install'
+  block:
+    - name: Validating install settings
+      when: (myRole.upgradeFromDir is defined) and (myRole.upgradeFromDir | length != 0)
+      ansible.builtin.fail:
+        msg: "Upgrade option is not empty, please in case of installation leave myRole.upgradeFromDir variable undefined or empty!"
+
+    - name: Including the install role in case of new installationType
+      ansible.builtin.include_tasks:
+        file: "{{ role_path }}/tasks/install.yml"

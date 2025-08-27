@@ -1,0 +1,50 @@
+---
+- name: Installing and configuring Inspire Designer (block)
+  block:
+    - name: Setting _tmpDir
+      ansible.builtin.set_fact:
+        _tmpDir: "/tmp/data"
+
+    - name: Creating temporary dir
+      ansible.builtin.file:
+        path: "{{ _tmpDir }}"
+        state: directory
+        mode: "u=xrw,g=xrw,o=r"
+
+    - name: Setting common local variables
+      ansible.builtin.set_fact:
+        _autoConfFile: "{{ _tmpDir }}/silent_installation_auto.conf"
+
+    - name: Debug vars _autoConfFile
+      debug:
+        var: _autoConfFile
+
+    - when: _existUpgradeFromDir is not defined
+      block:
+        - when: (play_hosts.index(inventory_hostname) != 0)
+          block:
+            - name: Disabling insertUser variable
+              ansible.builtin.set_fact:
+                icmDontInsertUser: ''
+                insertUserName: ''
+                insertUserPassword: ''
+
+            - name: Combining insertUser variable
+              ansible.builtin.set_fact:
+                myRole2: "{{ myRole2 | combine(icmDontInsertUser, recursive=true) }}"
+
+        - name: Setting installer local myRole2 additional variables
+          ansible.builtin.set_fact:
+            myRole2Override:
+              additionalParams: "{{ myRole2.additionalParams }} -allowdatarecording"
+
+        - name: Allowdatarecording override in myRole2 additional params
+          when: (allowDatarecording is defined) and (_existUpgradeFromDir is not defined)
+          ansible.builtin.set_fact:
+            myRole2: "{{ myRole2 | combine(myRole2Override, recursive=True) }}"
+
+        - name: Creating the configuration file from template for installation
+          ansible.builtin.template:
+            src: "silent_installation.conf.in"
+            dest: "{{ _autoConfFile | string }}"
+            mode: "u=xrw,g=r,o=r"

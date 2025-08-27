@@ -1,0 +1,7 @@
+---
+myRole2InternalDbTypes:
+  mssql: MsSQL
+  mysql: MySQL
+  postgresql: PostgreSQL
+  oracle: Oracle
+  db2: DB2

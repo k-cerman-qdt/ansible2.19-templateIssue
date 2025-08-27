@@ -1,0 +1,47 @@
+---
+general:
+  eulaAccepted: false
+  installationType: "New"
+  installationDir: "/tmp/install"
+  userName: ""
+  keyFile: ""
+  useDefaultEncryptionKey: true
+
+database:
+  myRole2:
+    tableName: ""
+    type: ""
+    connectString: ""
+    connectStringUserName: "{{ vault_.database.myRole2.connectStringUserName }}"
+    connectStringPassword: "{{ vault_.database.myRole2.connectStringPassword }}"
+    connectStringFromDSN: ""
+    connectStringFromDriver: ""
+    connectStringFromDriverServer: ""
+    connectStringFromDriverDB: ""
+
+myRole:
+  userName: "{{ general.userName }}"
+  storageDir: "{{ general.installationDir }}/data"
+  targetKeystoreDir: "{{ general.installationDir }}/data/certificate"
+  targetKeyDir: "{{ general.installationDir }}/data/key"
+  encryptionKeyFile: "{{ general.keyFile }}"
+  useDeprecatedLibraryForPDFimport: false
+
+myRole2:
+  service:
+    enable: true
+    name: "manager-31000"
+    userName: "{{ myRole.userName }}"
+    port: 31000
+  host: "localhost"
+  userName: "{{ vault_.myRole2.userName }}"
+  password: "{{ vault_.myRole2.password }}"
+  storageDir: "{{ myRole.storageDir }}/working/manager-31000/"
+  storageLogDir: "{{ myRole.storageDir }}/log/manager-31000/"
+  externalCertificateFile: ""
+  externalKeyFile: ""
+  clientVerifyDomain: ""
+  insertUserName: "{{ vault_.myRole2.insertUserName }}"
+  insertUserPassword: "{{ vault_.myRole2.insertUserPassword }}"
+  additionalParams: ""
+  additionalParamsSecure: ""

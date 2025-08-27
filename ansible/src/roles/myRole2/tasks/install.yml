@@ -1,0 +1,15 @@
+---
+- name: Create variables which override only one property in original object
+  ansible.builtin.set_fact:
+    myRole2Override:
+      service:
+        enable: true
+
+- name: Combine original settings and overrides
+  ansible.builtin.set_fact:
+    myRole2: "{{ myRole2 | combine(myRole2Override, recursive=True) }}"
+
+- name: Include myRole role install
+  ansible.builtin.include_role:
+    name: myRole
+    tasks_from: install
